@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Hybrid Theory",
+    "artist": "Linkin Park",
+    "year": 2000,
+    "genre": "Rock",
+    "tracks": 12,
+    "country": "USA"
+  },
+  {
+    "title": "Back in Black",
+    "artist": "AC/DC",
+    "year": 1980,
+    "genre": "Hard Rock",
+    "tracks": 10,
+    "country": "Australia"
+  },
+  {
+    "title": "Nevermind",
+    "artist": "Nirvana",
+    "year": 1991,
+    "genre": "Grunge",
+    "tracks": 13,
+    "country": "USA"
+  }
+]

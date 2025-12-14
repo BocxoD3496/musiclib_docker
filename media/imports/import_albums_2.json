@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Hybrid Theory",
+    "artist": "Linkin Park",
+    "year": 2000,
+    "genre": "Rock",
+    "tracks": 12,
+    "country": "USA"
+  },
+  {
+    "title": "Meteora",
+    "artist": "Linkin Park",
+    "year": 2003,
+    "genre": "Rock",
+    "tracks": 13,
+    "country": "USA"
+  },
+  {
+    "title": "The Dark Side of the Moon",
+    "artist": "Pink Floyd",
+    "year": 1973,
+    "genre": "Progressive Rock",
+    "tracks": 10,
+    "country": "UK"
+  }
+]

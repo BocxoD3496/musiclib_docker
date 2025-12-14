@@ -1,0 +1,14 @@
+*.pyc
+__pycache__/
+db.sqlite3
+*.sqlite3
+
+# Environment / secrets
+.env
+
+media/uploads/*
+media/exports/*
+
+# Python env
+venv/
+.venv/

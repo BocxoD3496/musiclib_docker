@@ -1,0 +1,20 @@
+{% extends 'albums/base.html' %}
+{% block content %}
+  <h2>Список файлов</h2>
+  {% if files %}
+    <ul>
+      {% for f in files %}
+        <li>{{ f }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if uploaded_items %}
+    <h3>Содержимое загруженных файлов</h3>
+    <ul>
+      {% for it in uploaded_items %}
+        <li>{{ it.name }}: {{ it.data.title }} — {{ it.data.artist }} ({{ it.data.year }})</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

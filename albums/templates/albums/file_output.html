@@ -1,0 +1,36 @@
+{% extends 'albums/base.html' %}
+{% block content %}
+<h2>Альбомы из JSON-файла</h2>
+{% if not albums %}
+  <div class="alert alert-info">JSON-файл отсутствует или пуст.</div>
+{% else %}
+<a href="{% url 'albums:download_json' %}" class="btn btn-success mb-3">
+  Скачать JSON
+</a>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Исполнитель</th>
+        <th>Год</th>
+        <th>Жанр</th>
+        <th>Страна</th>
+        <th>Треков</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in albums %}
+        <tr>
+          <td>{{ a.title }}</td>
+          <td>{{ a.artist }}</td>
+          <td>{{ a.year }}</td>
+          <td>{{ a.genre }}</td>
+          <td>{{ a.country }}</td>
+          <td>{{ a.tracks }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+{% endblock %}

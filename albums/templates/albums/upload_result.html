@@ -1,0 +1,16 @@
+{% extends 'albums/base.html' %}
+{% block content %}
+  <h2>Загрузка файла</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="datafile" accept=".json,.xml">
+    <button type="submit">Загрузить</button>
+  </form>
+
+  {% if ok %}
+    <h3>Файл {{ filename }} успешно загружен и распарсен</h3>
+    <pre>{{ parsed|safe }}</pre>
+  {% elif message %}
+    <p>Ошибка: {{ message }}</p>
+  {% endif %}
+{% endblock %}

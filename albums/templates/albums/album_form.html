@@ -1,0 +1,43 @@
+{% extends 'albums/base.html' %}
+{% block content %}
+<h2>Добавить альбом</h2>
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label">Название</label>
+    {{ form.title }}
+    {{ form.title.errors }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Исполнитель</label>
+    {{ form.artist }}
+    {{ form.artist.errors }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Год</label>
+    {{ form.year }}
+    {{ form.year.errors }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Жанр</label>
+    {{ form.genre }}
+    {{ form.genre.errors }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Страна</label>
+    {{ form.country }}
+    {{ form.country.errors }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Количество треков</label>
+    {{ form.tracks }}
+    {{ form.tracks.errors }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Куда сохранить</label><br>
+    {{ form.destination }}
+    {{ form.destination.errors }}
+  </div>
+  <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{% endblock %}
