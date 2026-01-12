@@ -90,19 +90,6 @@ curl -X POST http://localhost:8000/api/token/ \
 
 ---
 
-## 6) Как залить на GitHub (чтобы получить ссылку)
-
-```bash
-git init
-git add .
-git commit -m "LangStudy initial commit"
-git branch -M main
-git remote add origin https://github.com/<YOUR_USERNAME>/<REPO_NAME>.git
-git push -u origin main
-```
-
----
-
 ## Стек
 
 - Django 5
