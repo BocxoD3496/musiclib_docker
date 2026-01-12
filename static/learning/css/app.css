@@ -1,0 +1,16 @@
+/* Minimal additions to make Django-rendered inputs look nice without extra libs */
+input, select, textarea {
+  border-radius: .5rem;
+}
+
+form input, form select, form textarea {
+  width: 100%;
+  padding: .5rem .75rem;
+  border: 1px solid rgba(0,0,0,.15);
+}
+
+.placeholder-box {
+  min-height: 160px;
+  background: rgba(0,0,0,.03);
+  border: 1px dashed rgba(0,0,0,.2);
+}

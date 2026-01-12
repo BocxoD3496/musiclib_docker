@@ -1,0 +1,67 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}LangStudy{% endblock %}</title>
+
+    <!-- Bootstrap 5 (responsive for mobile/tablet/desktop) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'learning/css/app.css' %}">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'learning:home' %}">LangStudy</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="{% url 'learning:home' %}">Языки</a></li>
+            {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'learning:dashboard' %}">Мой прогресс</a></li>
+            {% endif %}
+          </ul>
+          <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+              <li class="nav-item"><span class="navbar-text me-2">👤 {{ user.username }}</span></li>
+              <li class="nav-item"><form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-outline-light btn-sm" type="submit">Выход</button>
+                </form>
+              </li>
+            {% else %}
+              <li class="nav-item me-2"><a class="btn btn-outline-light btn-sm" href="{% url 'accounts:login' %}">Вход</a></li>
+              <li class="nav-item"><a class="btn btn-warning btn-sm" href="{% url 'accounts:register' %}">Регистрация</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-4">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="border-top py-4 mt-5">
+      <div class="container small text-muted d-flex flex-wrap gap-2 justify-content-between">
+        <div>LangStudy • демо-приложение для изучения языков</div>
+        <div>Гость: доступ к просмотру и пробному обучению • Пользователь: сохранение прогресса • Админ: панель управления</div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

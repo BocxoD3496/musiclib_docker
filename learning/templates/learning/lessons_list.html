@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Уроки — {{ language.name }}{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+  <div>
+    <h1 class="h3 mb-0">Уроки: {{ language.name }}</h1>
+    <div class="text-muted">Поиск и сортировка реализованы как дополнительный функционал.</div>
+  </div>
+  <a class="btn btn-outline-secondary" href="{% url 'learning:home' %}">← Назад к языкам</a>
+</div>
+
+<form class="row g-2 align-items-end mb-3" method="get">
+  <div class="col-12 col-md-7">
+    <label class="form-label">{{ form.q.label }}</label>
+    {{ form.q }}
+  </div>
+  <div class="col-12 col-md-3">
+    <label class="form-label">{{ form.sort.label }}</label>
+    {{ form.sort }}
+  </div>
+  <div class="col-12 col-md-2 d-grid">
+    <button class="btn btn-primary" type="submit">Применить</button>
+  </div>
+</form>
+
+<div class="row g-3">
+  {% for lesson in lessons %}
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <div class="h5 mb-1">{{ lesson.order }}. {{ lesson.title }}</div>
+              <div class="text-muted small">
+                Карточек: {{ lesson.cards.count }} • Тест-вопросов: {{ lesson.quiz_published_count }}
+              </div>
+
+            </div>
+            <div class="text-muted small text-end">
+              Обновлено<br>{{ lesson.updated_at|date:"d.m.Y H:i" }}
+            </div>
+          </div>
+          {% if lesson.description %}
+            <p class="mt-3 mb-0">{{ lesson.description|linebreaksbr }}</p>
+          {% endif %}
+          <a class="btn btn-outline-primary mt-3 w-100" href="{% url 'learning:lesson_detail' lesson_id=lesson.pk %}">
+            Открыть урок
+          </a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <div class="alert alert-warning">По вашему запросу ничего не найдено.</div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }}{% endblock %}
+{% block content %}
+<div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+  <div>
+    <div class="text-muted small">{{ lesson.language.name }} ({{ lesson.language.code }})</div>
+    <h1 class="h3 mb-1">{{ lesson.order }}. {{ lesson.title }}</h1>
+    <div class="text-muted">
+      Карточек: {{ total_cards }} • Обновлено: {{ lesson.updated_at|date:"d.m.Y H:i" }}
+    </div>
+  </div>
+  <a class="btn btn-outline-secondary" href="{% url 'learning:lessons_list' language_code=lesson.language.code %}">
+    ← Назад к урокам
+  </a>
+</div>
+
+{% if lesson.description %}
+  <div class="card mb-3">
+    <div class="card-body">
+      {{ lesson.description|linebreaksbr }}
+    </div>
+  </div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="h5">Практика</div>
+
+        <div class="text-muted">
+          Открывайте карточку, смотрите ответ и отмечайте: «знаю» / «не знаю».
+        </div>
+
+        {% if user.is_authenticated %}
+          <a class="btn btn-success mt-2 w-100" href="{% url 'learning:quiz_start' lesson_id=lesson.pk %}">
+            Пройти тест ✅ (с проверкой)
+          </a>
+        {% else %}
+          <div class="alert alert-info mt-3 mb-0">
+            Тестирование с фиксацией результата доступно только после входа.
+          </div>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+          <div class="alert alert-info mt-3 mb-0">
+            Вы в гостевом режиме — прогресс по карточкам не будет сохранён.
+            <a href="{% url 'accounts:login' %}">Войдите</a>, чтобы сохранять результаты.
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="h5">Прогресс</div>
+        {# --- прогресс по тесту (ТОЛЬКО опубликованные вопросы) --- #}
+
+        {% if quiz_total == 0 %}
+          <div class="text-muted small">
+            Тестовых вопросов пока нет или они не опубликованы админом.
+          </div>
+        {% else %}
+          {% if user.is_authenticated %}
+            <div class="small text-muted">
+              Отвечено: {{ quiz_answered }} / {{ quiz_total }}<br>
+              Верно: {{ quiz_correct }} • Неверно: {{ quiz_wrong }}
+            </div>
+
+            <div class="d-grid gap-2 mt-2">
+              <a class="btn btn-success" href="{% url 'learning:quiz_start' lesson_id=lesson.pk %}">
+                Пройти / продолжить тест ✅
+              </a>
+              <a class="btn btn-outline-danger" href="{% url 'learning:quiz_reset' lesson_id=lesson.pk %}">
+                Сбросить ответы по тесту
+              </a>
+            </div>
+          {% else %}
+            <div class="text-muted small">
+              Для теста с фиксацией результата нужно войти.
+            </div>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

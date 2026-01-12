@@ -1,0 +1,44 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<h1>Выгрузка отчёта в XLSX</h1>
+<p class="help">
+  Выберите таблицы и поля. В итоге будет сформирован Excel-файл: по одному листу на каждую таблицу.
+</p>
+
+<form method="post">
+  {% csrf_token %}
+  <div style="display:grid; gap:16px;">
+    {% for model_name, fields in model_fields.items %}
+      <div class="module">
+        <h2>
+          <label>
+            <input type="checkbox" name="models" value="{{ model_name }}">
+            {{ model_name }}
+          </label>
+        </h2>
+        <div class="form-row">
+          <div class="help">Поля для выгрузки:</div>
+          <div style="columns: 2; max-width: 900px;">
+            {% for f in fields %}
+              <label style="display:block; margin:.25rem 0;">
+                <input type="checkbox" name="fields__{{ model_name }}" value="{{ f.0 }}">
+                {{ f.0 }}
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="submit-row">
+    <input type="submit" value="Скачать XLSX" class="default">
+  </div>
+</form>
+
+<p class="help">
+  Подсказка: страница доступна только администратору (staff). Если вы не видите админ-панель — создайте суперпользователя.
+</p>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Результат — {{ lesson.title }}{% endblock %}
+{% block content %}
+<h1 class="h4">Результат теста: {{ lesson.title }}</h1>
+
+<div class="row g-3 mt-1">
+  <div class="col-12 col-md-4">
+    <div class="card"><div class="card-body">
+      <div class="text-muted small">Всего вопросов</div>
+      <div class="display-6">{{ total }}</div>
+    </div></div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="card"><div class="card-body">
+      <div class="text-muted small">Верно</div>
+      <div class="display-6">{{ correct }}</div>
+    </div></div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="card"><div class="card-body">
+      <div class="text-muted small">Неверно</div>
+      <div class="display-6">{{ wrong }}</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="d-flex gap-2 flex-wrap mt-3">
+  <a class="btn btn-outline-secondary" href="{% url 'learning:lesson_detail' lesson_id=lesson.pk %}">К уроку</a>
+  <a class="btn btn-outline-danger" href="{% url 'learning:quiz_reset' lesson_id=lesson.pk %}">Сбросить попытки</a>
+</div>
+{% endblock %}

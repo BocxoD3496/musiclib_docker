@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Тест — {{ lesson.title }}{% endblock %}
+{% block content %}
+<h1 class="h4 mb-1">Тест: {{ lesson.title }}</h1>
+<div class="text-muted small mb-3">Прогресс: {{ answered }} / {{ total }}</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="h5 mb-3">{{ question.order }}. {{ question.text }}</div>
+
+    {% if attempt %}
+      <div class="alert {% if attempt.is_correct %}alert-success{% else %}alert-danger{% endif %}">
+        Ваш ответ: <b>{{ attempt.choice.text }}</b>
+        {% if attempt.is_correct %} — верно ✅{% else %} — неверно ❌{% endif %}
+      </div>
+      <a class="btn btn-primary" href="{% url 'learning:quiz_start' lesson_id=lesson.pk %}">Дальше</a>
+    {% else %}
+      <form method="post" action="{% url 'learning:quiz_answer' lesson_id=lesson.pk question_id=question.pk %}">
+        {% csrf_token %}
+        <div class="list-group">
+          {% for c in choices %}
+            <label class="list-group-item d-flex gap-2 align-items-start">
+              <input class="form-check-input mt-1" type="radio" name="choice_id" value="{{ c.pk }}" required>
+              <span>{{ c.text }}</span>
+            </label>
+          {% endfor %}
+        </div>
+        <button class="btn btn-success mt-3" type="submit">Ответить</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

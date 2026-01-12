@@ -1,8 +1,0 @@
-{% extends 'albums/base.html' %}
-{% block content %}
-<h2>Выберите источник данных</h2>
-<p>
-  <a class="btn btn-outline-primary me-2" href="{% url 'albums:list_from_files' %}">Показать из JSON-файла</a>
-  <a class="btn btn-outline-primary" href="{% url 'albums:db_list' %}">Показать из базы данных (AJAX)</a>
-</p>
-{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+  <div class="dashboard-module">
+    <h2>Отчёты</h2>
+    <ul class="actionlist">
+      <li>
+        <a href="{{ report_export_url }}" class="addlink">
+          📊 Выгрузка отчётов (XLSX)
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  {{ block.super }}
+{% endblock %}

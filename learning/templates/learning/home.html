@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}LangStudy — Языки{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+  <div>
+    <h1 class="h3 mb-1">Выберите язык</h1>
+    <div class="text-muted">Гость может просматривать и проходить уроки без сохранения прогресса.</div>
+  </div>
+  {% if user.is_authenticated %}
+    <a class="btn btn-primary" href="{% url 'learning:dashboard' %}">Открыть мой прогресс</a>
+  {% endif %}
+</div>
+
+<div class="row g-3">
+  {% for lang in languages %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div>
+              <div class="h5 mb-1">{{ lang.name }}</div>
+              <div class="text-muted small">Код: {{ lang.code }}</div>
+              <div class="text-muted small mt-2">Последнее обновление: {{ lang.updated_at|date:"d.m.Y H:i" }}</div>
+            </div>
+            <span class="badge text-bg-secondary">{{ lang.lessons.count }} урок(ов)</span>
+          </div>
+          <a class="btn btn-outline-primary mt-3 w-100" href="{% url 'learning:lessons_list' language_code=lang.code %}">
+            Перейти к урокам
+          </a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">
+        Пока нет данных. Зайдите в админ-панель и добавьте языки/уроки/карточки.
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

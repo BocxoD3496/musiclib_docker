@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block branding %}
+<h1 id="site-name">
+  <a href="{% url 'admin:index' %}">LangStudy Admin</a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}
+  <div style="padding: 8px 12px;">
+    <a href="{% url 'admin_report_export' %}" class="button" style="text-decoration:none;">⬇️ Выгрузка XLSX</a>
+  </div>
+{% endblock %}
