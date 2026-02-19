@@ -56,7 +56,7 @@ class ModelCreateTests(TestCase):
 class QuizModelsSmokeTests(TestCase):
     def test_quiz_models_create(self):
         """
-        Если у тебя реально есть миграции под Quiz-модели — этот тест пройдёт.
+        Если есть миграции под Quiz-модели — этот тест пройдёт.
         Если миграций нет, будет ошибка таблицы (и это полезный сигнал).
         """
         user = create_user()

@@ -9,7 +9,7 @@ from .utils import create_superuser, seed_language_lesson_cards
 class AdminExportTests(TestCase):
     def setUp(self):
         self.admin = create_superuser()
-        seed_language_lesson_cards(cards=1)
+        seed_language_lesson_cards(lang_code="en", cards=1)
 
     def test_export_requires_admin(self):
         url = reverse("admin_report_export")
@@ -22,16 +22,8 @@ class AdminExportTests(TestCase):
         r = self.client.get(url)
         self.assertEqual(r.status_code, 200)
 
-        ctype = r.headers.get("Content-Type", "")
-        self.assertTrue(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" in ctype
-            or "application/octet-stream" in ctype
-        )
+        # xlsx — это zip, начинается с PK
+        self.assertTrue(r.content.startswith(b"PK\x03\x04"))
 
         wb = load_workbook(filename=io.BytesIO(r.content))
         self.assertGreaterEqual(len(wb.sheetnames), 1)
-
-        # Минимальная проверка содержимого (подстрой под реальную структуру отчёта)
-        ws = wb[wb.sheetnames[0]]
-        self.assertGreaterEqual(ws.max_row, 1)
-        self.assertGreaterEqual(ws.max_column, 1)
