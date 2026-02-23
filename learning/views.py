@@ -49,7 +49,8 @@ def lesson_detail(request, lesson_id: int):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
 
     # Cards
-    total_cards = lesson.cards.count()
+    cards = lesson.cards.all()
+    total_cards = cards.count()
 
     # Quiz (published only)
     quiz_total = lesson.quiz_questions.filter(is_published=True).count()
@@ -75,55 +76,16 @@ def lesson_detail(request, lesson_id: int):
 
     return render(request, "learning/lesson_detail.html", {
         "lesson": lesson,
+        "cards": cards,                 # <-- добавили
         "total_cards": total_cards,
         "progress": progress,
 
-        # quiz stats for template
         "quiz_total": quiz_total,
         "quiz_answered": quiz_answered,
         "quiz_correct": quiz_correct,
         "quiz_wrong": quiz_wrong,
     })
-
-    lesson = get_object_or_404(Lesson, pk=lesson_id)
-
-    total_cards = lesson.cards.count()
-
-    # --- QUIZ stats (published only) ---
-    quiz_total = lesson.quiz_questions.filter(is_published=True).count()
-
-    quiz_correct = 0
-    quiz_wrong = 0
-    quiz_answered = 0
-
-    if request.user.is_authenticated and quiz_total > 0:
-        attempts = UserQuizAttempt.objects.filter(
-            user=request.user,
-            question__lesson=lesson,
-            question__is_published=True
-        )
-        quiz_answered = attempts.count()
-        quiz_correct = attempts.filter(is_correct=True).count()
-        quiz_wrong = attempts.filter(is_correct=False).count()
-
-    # --- Cards progress (your existing logic) ---
-    progress = None
-    if request.user.is_authenticated:
-        progress, _ = UserLessonProgress.objects.get_or_create(user=request.user, lesson=lesson)
-
-    return render(request, "learning/lesson_detail.html", {
-        "lesson": lesson,
-        "total_cards": total_cards,
-        "progress": progress,
-
-        # quiz in template
-        "quiz_total": quiz_total,
-        "quiz_answered": quiz_answered,
-        "quiz_correct": quiz_correct,
-        "quiz_wrong": quiz_wrong,
-    })
-
-
+    
 def _get_next_card_for_session(lesson: Lesson, index: int):
     cards = list(lesson.cards.all())
     if not cards:

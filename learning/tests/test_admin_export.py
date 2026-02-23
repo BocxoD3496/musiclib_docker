@@ -1,12 +1,10 @@
 import io
-from django.test import TestCase
-from django.urls import reverse
 from openpyxl import load_workbook
-
+from django.urls import reverse
+from .base import BaseTestCase
 from .utils import create_superuser, seed_language_lesson_cards
 
-
-class AdminExportTests(TestCase):
+class AdminExportTests(BaseTestCase):
     def setUp(self):
         self.admin = create_superuser()
         seed_language_lesson_cards(lang_code="en", cards=1)
@@ -19,10 +17,14 @@ class AdminExportTests(TestCase):
     def test_export_returns_valid_xlsx(self):
         self.client.login(username="admin", password="Pass12345!")
         url = reverse("admin_report_export")
-        r = self.client.get(url)
-        self.assertEqual(r.status_code, 200)
 
-        # xlsx — это zip, начинается с PK
+        post_data = {
+            "models": ["Language"],
+            "fields__Language": ["id", "name", "code"],
+        }
+
+        r = self.client.post(url, data=post_data)
+        self.assertEqual(r.status_code, 200)
         self.assertTrue(r.content.startswith(b"PK\x03\x04"))
 
         wb = load_workbook(filename=io.BytesIO(r.content))

@@ -1,22 +1,22 @@
-from django.test import TestCase
+from .base import BaseTestCase
 from django.urls import reverse
 
 from .utils import create_user, create_superuser
 
 
-class AuthzTests(TestCase):
+class AuthzTests(BaseTestCase):
     def setUp(self):
         self.user = create_user()
         self.admin = create_superuser()
 
     def test_guest_cannot_access_dashboard(self):
-        url = reverse("dashboard")
+        url = reverse("learning:dashboard")
         r = self.client.get(url)
         self.assertIn(r.status_code, (301, 302, 403))
 
     def test_user_can_access_dashboard(self):
         self.client.login(username="u1", password="Pass12345!")
-        url = reverse("dashboard")
+        url = reverse("learning:dashboard")
         r = self.client.get(url)
         self.assertEqual(r.status_code, 200)
 

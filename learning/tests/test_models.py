@@ -1,5 +1,5 @@
 import time
-from django.test import TestCase
+from .base import BaseTestCase
 from django.db import IntegrityError
 from django.utils import timezone
 
@@ -10,7 +10,7 @@ from learning.models import (
 from .utils import create_user, seed_language_lesson_cards
 
 
-class ModelCreateTests(TestCase):
+class ModelCreateTests(BaseTestCase):
     def test_create_language(self):
         lang = Language.objects.create(name="English", code="en")
         self.assertIsNotNone(lang.id)
@@ -53,7 +53,7 @@ class ModelCreateTests(TestCase):
         self.assertGreater(lang.updated_at, old_updated)
 
 
-class QuizModelsSmokeTests(TestCase):
+class QuizModelsSmokeTests(BaseTestCase):
     def test_quiz_models_create(self):
         """
         Если есть миграции под Quiz-модели — этот тест пройдёт.

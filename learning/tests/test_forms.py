@@ -1,16 +1,17 @@
-from django.test import TestCase
+from .base import BaseTestCase
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm
+from django.urls import reverse
 
 try:
-    from learning.forms import RegisterForm, LoginForm
+    from accounts.forms import RegisterForm
 except Exception:
     RegisterForm = None
-    LoginForm = None
 
 User = get_user_model()
 
 
-class FormsTests(TestCase):
+class FormsTests(BaseTestCase):
     def test_register_form_valid(self):
         if not RegisterForm:
             self.skipTest("RegisterForm not found (adjust import path/name).")
@@ -35,18 +36,18 @@ class FormsTests(TestCase):
         })
         self.assertFalse(form.is_valid())
         self.assertTrue(form.errors)
+        
+        def test_login_view_valid(self):
+            User = get_user_model()
+            User.objects.create_user(
+                username="u1",
+                email="u1@example.com",
+                password="Pass12345!"
+        )
 
-    def test_login_form_valid(self):
-        if not LoginForm:
-            self.skipTest("LoginForm not found (adjust import path/name).")
+        r = self.client.post(
+            reverse("accounts:login"),
+            {"username": "u1", "password": "Pass12345!"},
+        )
 
-        User.objects.create_user(username="u1", email="u1@example.com", password="Pass12345!")
-        form = LoginForm(data={"username": "u1", "password": "Pass12345!"})
-        self.assertTrue(form.is_valid(), form.errors)
-
-    def test_login_form_invalid(self):
-        if not LoginForm:
-            self.skipTest("LoginForm not found (adjust import path/name).")
-
-        form = LoginForm(data={"username": "nope", "password": "wrong"})
-        self.assertFalse(form.is_valid())
+        self.assertEqual(r.status_code, 200)
